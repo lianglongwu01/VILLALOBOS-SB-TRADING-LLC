@@ -1,11 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": null,
-  "installCommand": null,
-  "outputDirectory": ".",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" }
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/api/dramas", "destination": "/api" },
+    { "source": "/api/dramas/:id", "destination": "/api" },
+    { "source": "/api/user/progress", "destination": "/api" },
+    { "source": "/api/user/session", "destination": "/api" }
   ]
 }
