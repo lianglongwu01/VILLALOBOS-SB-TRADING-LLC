@@ -23,7 +23,7 @@ export async function listDramas(params: URLSearchParams) {
 export async function dramaDetail(rawId: string) {
   const id = uuid(rawId, 'id');
   const { data, error } = await database().from('dramas')
-    .select(dramaFields + ',episodes(episode_num,title,byteplus_vid,is_free)')
+    .select(dramaFields + ',episodes!episodes_drama_id_fkey(episode_num,title,byteplus_vid,is_free)')
     .eq('id', id).eq('is_published', true)
     .order('episode_num', { referencedTable: 'episodes', ascending: true })
     .maybeSingle();

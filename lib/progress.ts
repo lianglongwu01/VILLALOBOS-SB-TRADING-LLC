@@ -14,7 +14,7 @@ export async function saveProgress(request: Request) {
   const seconds = integer(body.progress_seconds, 'progress_seconds', 0, pgIntegerMax);
   const db = database();
 
-  const available = await db.from('episodes').select('episode_num,dramas!inner(is_published)')
+  const available = await db.from('episodes').select('episode_num,dramas!episodes_drama_id_fkey!inner(is_published)')
     .eq('drama_id', dramaId).eq('episode_num', episode).eq('dramas.is_published', true)
     .maybeSingle();
   checkDatabase(available.error, 'findPublishedEpisode');
@@ -39,7 +39,7 @@ export async function getProgress(request: Request, params: URLSearchParams) {
   const db = database();
   const [history, latest] = await Promise.all([
     db.from('user_playback_history')
-      .select(progressFields + ',drama:dramas!inner(id,title,cover_url,total_episodes)')
+      .select(progressFields + ',drama:dramas!user_playback_history_drama_id_fkey!inner(id,title,cover_url,total_episodes)')
       .eq('openid', openid).eq('drama.is_published', true)
       .order('updated_at', { ascending: false }).order('drama_id').order('episode_num')
       .range(page.offset, page.offset + page.limit),
